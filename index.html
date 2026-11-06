@@ -52,13 +52,13 @@
     <span id="sound-icon">🔊</span> <span id="sound-text">ปิดเสียงเพลง</span>
   </button>
 
-  <!-- ไฟล์เสียงเพลง MP3 (ชื่อไฟล์ song.mp3 อยู่ในโฟลเดอร์เดียวกัน) -->
+  <!-- ไฟล์เสียงเพลง MP3 -->
   <audio id="bg-music" src="song.mp3" preload="auto" loop autoplay></audio>
 
   <main class="ecard">
    <header>
     <div class="hero-photo">
-     <img class="photo" src="hero.jpg" alt="Hero Image">
+     <img class="photo" src="LINE_ALBUM_Pre-wedding_261104_15.jpg" alt="Hero Cover">
     </div>
     <div class="hero-overlay">
      <p class="rose" style="letter-spacing: 3px; margin: 0 0 6px; font-size: 14px;">THE WEDDING OF</p>
@@ -87,12 +87,12 @@
     <p class="muted" style="font-size: 14px;">ขอเรียนเชิญท่านเพื่อเป็นเกียรติและร่วมฉลองมงคลสมรสระหว่าง</p>
     <div class="couple-grid" style="margin-top:20px">
      <div>
-      <div class="photo-frame arch"><img class="photo" src="bride.jpg" alt="Bride"></div>
+      <div class="photo-frame arch"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_14.jpg" alt="Bride"></div>
       <h3 class="rose" style="font-size: 15px;">นางสาว เบญจวรรณ วีระศักดิ์</h3>
       <p class="muted" style="font-size: 14px;">Benjawan (เบญ / Ben)</p>
      </div>
      <div>
-      <div class="photo-frame arch"><img class="photo" src="groom.jpg" alt="Groom"></div>
+      <div class="photo-frame arch"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_10.jpg" alt="Groom"></div>
       <h3 class="rose" style="font-size: 15px;">ร้อยเอก พีรัชชัย อุปกรณ์ศิริการ</h3>
       <p class="muted" style="font-size: 14px;">Peeratchai (พี / Pee)</p>
      </div>
@@ -102,7 +102,7 @@
    <section class="section">
     <h2 class="serif" style="font-size: 21px;">SAVE THE DATE</h2>
     <p style="margin: 0 0 15px; font-size: 14px;">วันเสาร์ที่ 30 มกราคม พ.ศ. 2570 | เวลา 18.00 น.</p>
-    <div class="photo-frame" style="height:360px"><img class="photo" src="military.jpg" alt="Military Portrait"></div>
+    <div class="photo-frame" style="height:360px"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_16.jpg" alt="Military Portrait"></div>
     
     <div class="countdown">
      <div class="cd"><strong id="cd-days">00</strong><small>วัน</small></div>
@@ -142,11 +142,22 @@
     <a class="action" style="margin-top:15px;" target="_blank" href="https://www.google.com/maps/search/?api=1&query=สโมสรทหารบก+ถนนวิภาวดีรังสิต">📍 เปิด Google Maps เพื่อนำทาง</a>
    </section>
 
+   <section class="section">
+    <h2 class="serif" style="font-size: 21px;">LOVE STORY</h2>
+    <p class="rose" style="font-size: 14px;">#benpeewedding</p>
+    <div class="gallery-grid">
+     <div class="photo-frame wide"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_11.jpg" alt="Gallery 1"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_7.jpg" alt="Gallery 2"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_12.jpg" alt="Gallery 3"></div>
+     <div class="photo-frame wide"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_13.jpg" alt="Gallery 4"></div>
+    </div>
+   </section>
+
    <footer class="section">
     <h2 class="serif" style="font-size: 21px;">SEND LOVE &amp; GIFT</h2>
     <p class="muted" style="font-size: 14px;">ร่วมแสดงความยินดีกับบ่าวสาวผ่านระบบ PromptPay</p>
     <div class="photo-frame" style="max-width:240px;height:290px;margin:15px auto;background:white">
-     <img class="photo" style="object-fit:contain;padding:12px;background:white" src="qrcode.jpg" alt="PromptPay QR">
+     <img class="photo" style="object-fit:contain;padding:12px;background:white" src="S__17604652.jpg" alt="PromptPay QR">
     </div>
     <p class="rose" style="margin: 12px 0 2px; font-size: 14px;">นาย พีรัชชัย อุปกรณ์ศิริการ</p>
     <p class="muted" style="margin: 0; font-size: 14px;">MR PEERATCHAI UPPAKORNSIRIKARN (ttb)</p>
@@ -157,18 +168,15 @@
     if (window.lucide) lucide.createIcons();
     const $ = id => document.getElementById(id);
 
-    // ควบคุมเสียงเพลง MP3
     const music = $("bg-music");
     const soundBtn = $("sound-control");
     let isPlaying = false;
 
-    // พยายามเล่นเพลงอัตโนมัติ
     music.volume = 0.8;
     music.play().then(() => {
       isPlaying = true;
       updateButton();
     }).catch(() => {
-      // บราวเซอร์บล็อก Autoplay จนกว่าจะมีการคลิกหน้าจอครั้งแรก
       document.addEventListener('click', () => {
         if (!isPlaying) {
           music.play();
@@ -199,7 +207,6 @@
       }
     }
 
-    // นับถอยหลังสู่วันงาน
     const targetTime = new Date("2027-01-30T13:30:00+07:00").getTime();
     function countdown() {
       const remaining = Math.max(0, targetTime - Date.now());
@@ -211,7 +218,6 @@
     countdown();
     setInterval(countdown, 1000);
 
-    // แผนที่ Leaflet
     if (window.L) {
       const map = L.map("map", {scrollWheelZoom:false}).setView([13.7826, 100.5578], 17);
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom:19 }).addTo(map);
