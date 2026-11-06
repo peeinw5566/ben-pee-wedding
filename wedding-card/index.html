@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wedding of Ben &amp; Pee | #benpeewedding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Prompt:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <style>
+    :root{--rose:#c67d85;--blush:#eda5b2;--gold:#e6a99a;--paper:#fbf3ec;--ink:#4a3b3c;--muted:#7a6567}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;width:100%;font-family:Prompt,sans-serif;color:var(--ink);background:var(--paper)}
+    .ecard{width:100%;max-width:430px;margin:auto;min-height:100vh;background:var(--paper);box-shadow:0 0 30px #4a3b3c20;overflow:hidden;position:relative}
+    .section{padding:40px 24px;text-align:center;border-bottom:1px solid #e6a99a60}
+    .serif{font-family:"Cormorant Garamond",serif;letter-spacing:.075em;color:var(--rose);margin:0 0 10px}
+    h1.serif{line-height:1.1}h3{margin:10px 0 2px}
+    .muted{color:var(--muted)}.rose{color:var(--rose)}
+    .photo{width:100%;height:100%;display:block;object-fit:cover;background:#eed9d0}
+    .photo-frame{overflow:hidden;border:2px solid var(--gold);border-radius:14px;background:#eed9d0}
+    .hero-photo{height:540px}.hero-photo img{height:100%}
+    .hero-overlay{position:relative;margin-top:-160px;padding:32px 20px 35px;background:linear-gradient(to top,#fbf3ec 15%,#fbf3eccb 63%,transparent);text-align:center}
+    .couple-grid,.gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .arch{height:220px;border-radius:110px 110px 12px 12px}.arch img,.gallery-grid img{height:100%}
+    .countdown{display:flex;justify-content:center;gap:8px;margin:20px 0}
+    .cd{flex:1;min-width:0;padding:10px 2px;border:1px solid var(--blush);border-radius:12px;background:white}
+    .cd strong{display:block;font-size:24px;color:var(--rose);line-height:1.3}.cd small{color:var(--muted)}
+    .timeline{text-align:center;margin:25px auto;max-width:320px}
+    .tl{position:relative;margin-bottom:0;padding:0 0 18px}.tl:not(:last-child):after{content:"";display:block;width:72%;margin:14px auto 0;border-bottom:1px dashed var(--blush)}
+    .tl-time{display:block;font-weight:600;color:var(--rose)}.tl-icon{display:block;width:46px;height:46px;margin:0 auto 6px;stroke:currentColor;stroke-width:1.5}
+    .palette{display:flex;justify-content:center;gap:9px;margin:18px 0}.swatch{width:42px;height:42px;border:2px solid white;border-radius:50%;box-shadow:0 2px 6px #0002}
+    .gallery-grid{gap:10px;margin-top:15px}.gallery-grid .photo-frame{height:190px}.gallery-grid .wide{grid-column:span 2;height:240px}
+    .rsvp-card{padding:22px;text-align:left;border:1px solid var(--gold);border-radius:16px;background:white;box-shadow:0 4px 15px #c67d8520}
+    .field{margin-bottom:14px}.field label{display:block;margin-bottom:5px}
+    .field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid var(--gold);border-radius:8px;background:#fffcfa}
+    .action{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:46px;padding:11px 15px;border:0;border-radius:25px;background:var(--rose);color:white;text-decoration:none;text-align:center;box-shadow:0 3px 10px #c67d8559;cursor:pointer}
+    .action:hover,.music:hover{background:#b06971}
+    
+    /* ปุ่มควบคุมเพลงมุมขวาล่าง เลื่อนตามหน้าจอ */
+    .music{position:fixed;right:20px;bottom:20px;z-index:99999;min-height:44px;padding:10px 18px;border:2px solid white;border-radius:30px;background:var(--rose);color:white;box-shadow:0 4px 15px rgba(198,125,133,0.6);cursor:pointer;font-family:Prompt,sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px}
+    
+    #map{width:100%;height:230px;border:1px solid var(--gold);border-radius:14px;overflow:hidden;text-align:left}
+    .status{margin:12px 0 0}.hidden,[hidden]{display:none!important}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- ปุ่มเปิด-ปิดเสียงเพลง MP3 -->
+  <button id="sound-control" class="music" type="button">
+    <span id="sound-icon">🔊</span> <span id="sound-text">ปิดเสียงเพลง</span>
+  </button>
+
+  <!-- ไฟล์เสียงเพลง MP3 (ชื่อไฟล์ song.mp3 อยู่ในโฟลเดอร์เดียวกัน) -->
+  <audio id="bg-music" src="song.mp3" preload="auto" loop autoplay></audio>
+
+  <main class="ecard">
+   <header>
+    <div class="hero-photo">
+     <img class="photo" src="hero.jpg" alt="Hero Image">
+    </div>
+    <div class="hero-overlay">
+     <p class="rose" style="letter-spacing: 3px; margin: 0 0 6px; font-size: 14px;">THE WEDDING OF</p>
+     <h1 class="serif" style="color: var(--rose); font-size: 28px;">BEN &amp; PEE</h1>
+     <p class="rose" style="margin: 0 0 12px; font-size: 14px;">#benpeewedding</p>
+     <p style="margin: 4px 0; font-size: 14px;">วันเสาร์ที่ 30 มกราคม 2570</p>
+     <p class="muted" style="margin: 0; font-size: 14px;">ณ ห้องมัฆวานรังสรรค์ สโมสรทหารบก (ถนนวิภาวดีรังสิต)</p>
+    </div>
+   </header>
+
+   <section class="section">
+    <h2 class="serif" style="font-size: 21px;">WITH LOVE &amp; JOY</h2>
+    <p class="muted" style="font-size: 14px; margin-bottom: 14px;">ด้วยความยินดีอย่างยิ่งของ</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px; margin-bottom:20px">
+     <div>
+      <p class="rose" style="font-weight:600;">ฝ่ายเจ้าสาว</p>
+      <p>นาย สุทธิรักษ์ วีระศักดิ์</p>
+      <p>นาง ประคอง วีระศักดิ์</p>
+     </div>
+     <div>
+      <p class="rose" style="font-weight:600;">ฝ่ายเจ้าบ่าว</p>
+      <p>นาย สิทธิชัย อุปกรณ์ศิริการ</p>
+      <p>นาง พัชรินทร์ ใจดี</p>
+     </div>
+    </div>
+    <p class="muted" style="font-size: 14px;">ขอเรียนเชิญท่านเพื่อเป็นเกียรติและร่วมฉลองมงคลสมรสระหว่าง</p>
+    <div class="couple-grid" style="margin-top:20px">
+     <div>
+      <div class="photo-frame arch"><img class="photo" src="bride.jpg" alt="Bride"></div>
+      <h3 class="rose" style="font-size: 15px;">นางสาว เบญจวรรณ วีระศักดิ์</h3>
+      <p class="muted" style="font-size: 14px;">Benjawan (เบญ / Ben)</p>
+     </div>
+     <div>
+      <div class="photo-frame arch"><img class="photo" src="groom.jpg" alt="Groom"></div>
+      <h3 class="rose" style="font-size: 15px;">ร้อยเอก พีรัชชัย อุปกรณ์ศิริการ</h3>
+      <p class="muted" style="font-size: 14px;">Peeratchai (พี / Pee)</p>
+     </div>
+    </div>
+   </section>
+
+   <section class="section">
+    <h2 class="serif" style="font-size: 21px;">SAVE THE DATE</h2>
+    <p style="margin: 0 0 15px; font-size: 14px;">วันเสาร์ที่ 30 มกราคม พ.ศ. 2570 | เวลา 18.00 น.</p>
+    <div class="photo-frame" style="height:360px"><img class="photo" src="military.jpg" alt="Military Portrait"></div>
+    
+    <div class="countdown">
+     <div class="cd"><strong id="cd-days">00</strong><small>วัน</small></div>
+     <div class="cd"><strong id="cd-hours">00</strong><small>ชั่วโมง</small></div>
+     <div class="cd"><strong id="cd-mins">00</strong><small>นาที</small></div>
+     <div class="cd"><strong id="cd-secs">00</strong><small>วินาที</small></div>
+    </div>
+    <a class="action" target="_blank" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=งานมงคลสมรส+เบญ+%26+พี+(%23benpeewedding)&dates=20270130T110000Z/20270130T150000Z">📅 บันทึกวันงานลงปฏิทิน</a>
+   </section>
+
+   <section class="section">
+    <h2 class="serif" style="font-size: 21px;">WEDDING TIMELINE</h2>
+    <p class="muted" style="font-size: 14px;">กำหนดการพิธีมงคลสมรสและงานเลี้ยงฉลอง</p>
+    <div class="timeline" style="margin-top:20px;">
+     <div class="tl"><span class="tl-time"><i data-lucide="camera" class="tl-icon"></i>18:00 น.</span><p>ต้อนรับแขกที่มาร่วมฉลอง</p></div>
+     <div class="tl"><span class="tl-time"><i data-lucide="utensils" class="tl-icon"></i>18:30 น.</span><p>รับประทานอาหาร (โต๊ะจีน) เริ่มพิธีการ</p></div>
+     <div class="tl"><span class="tl-time"><i data-lucide="heart" class="tl-icon"></i>19:00 น.</span><p>เปิดตัวบ่าวสาว</p></div>
+     <div class="tl"><span class="tl-time"><i data-lucide="party-popper" class="tl-icon"></i>21:00 น.</span><p>After Party 🕶️</p></div>
+    </div>
+   </section>
+
+   <section class="section">
+    <h2 class="serif" style="font-size: 21px;">DRESS CODE</h2>
+    <p class="rose" style="font-size: 14px;">DUSTY ROSE ROMANCE</p>
+    <div class="palette">
+     <span class="swatch" style="background:#c67d85"></span>
+     <span class="swatch" style="background:#eda5b2"></span>
+     <span class="swatch" style="background:#ea94a4"></span>
+     <span class="swatch" style="background:#e6a99a"></span>
+     <span class="swatch" style="background:#fad7ba"></span>
+    </div>
+    <hr style="border:0;border-top:1px dashed var(--gold);margin:28px 0">
+    <h2 class="serif" style="font-size: 21px;">VENUE &amp; LOCATION</h2>
+    <p style="font-size: 14px;">ห้องประชุม มัฆวานรังสรรค์</p>
+    <p class="muted" style="margin-bottom: 15px; font-size: 14px;">สโมสรทหารบก (ถนนวิภาวดีรังสิต)</p>
+    <div id="map"></div>
+    <a class="action" style="margin-top:15px;" target="_blank" href="https://www.google.com/maps/search/?api=1&query=สโมสรทหารบก+ถนนวิภาวดีรังสิต">📍 เปิด Google Maps เพื่อนำทาง</a>
+   </section>
+
+   <footer class="section">
+    <h2 class="serif" style="font-size: 21px;">SEND LOVE &amp; GIFT</h2>
+    <p class="muted" style="font-size: 14px;">ร่วมแสดงความยินดีกับบ่าวสาวผ่านระบบ PromptPay</p>
+    <div class="photo-frame" style="max-width:240px;height:290px;margin:15px auto;background:white">
+     <img class="photo" style="object-fit:contain;padding:12px;background:white" src="qrcode.jpg" alt="PromptPay QR">
+    </div>
+    <p class="rose" style="margin: 12px 0 2px; font-size: 14px;">นาย พีรัชชัย อุปกรณ์ศิริการ</p>
+    <p class="muted" style="margin: 0; font-size: 14px;">MR PEERATCHAI UPPAKORNSIRIKARN (ttb)</p>
+   </footer>
+  </main>
+
+  <script>
+    if (window.lucide) lucide.createIcons();
+    const $ = id => document.getElementById(id);
+
+    // ควบคุมเสียงเพลง MP3
+    const music = $("bg-music");
+    const soundBtn = $("sound-control");
+    let isPlaying = false;
+
+    // พยายามเล่นเพลงอัตโนมัติ
+    music.volume = 0.8;
+    music.play().then(() => {
+      isPlaying = true;
+      updateButton();
+    }).catch(() => {
+      // บราวเซอร์บล็อก Autoplay จนกว่าจะมีการคลิกหน้าจอครั้งแรก
+      document.addEventListener('click', () => {
+        if (!isPlaying) {
+          music.play();
+          isPlaying = true;
+          updateButton();
+        }
+      }, { once: true });
+    });
+
+    soundBtn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        isPlaying = true;
+      } else {
+        music.pause();
+        isPlaying = false;
+      }
+      updateButton();
+    });
+
+    function updateButton() {
+      if (isPlaying) {
+        $("sound-icon").textContent = "🔊";
+        $("sound-text").textContent = "ปิดเสียงเพลง";
+      } else {
+        $("sound-icon").textContent = "🔇";
+        $("sound-text").textContent = "เปิดเสียงเพลง";
+      }
+    }
+
+    // นับถอยหลังสู่วันงาน
+    const targetTime = new Date("2027-01-30T13:30:00+07:00").getTime();
+    function countdown() {
+      const remaining = Math.max(0, targetTime - Date.now());
+      $("cd-days").textContent = String(Math.floor(remaining / 86400000));
+      $("cd-hours").textContent = String(Math.floor(remaining / 3600000) % 24).padStart(2, "0");
+      $("cd-mins").textContent = String(Math.floor(remaining / 60000) % 60).padStart(2, "0");
+      $("cd-secs").textContent = String(Math.floor(remaining / 1000) % 60).padStart(2, "0");
+    }
+    countdown();
+    setInterval(countdown, 1000);
+
+    // แผนที่ Leaflet
+    if (window.L) {
+      const map = L.map("map", {scrollWheelZoom:false}).setView([13.7826, 100.5578], 17);
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom:19 }).addTo(map);
+      L.marker([13.7826, 100.5578]).addTo(map).bindPopup("<b>ห้องประชุมมัฆวานรังสรรค์</b><br>สโมสรทหารบก").openPopup();
+    }
+  </script>
+</body>
+</html>
