@@ -18,11 +18,11 @@
     h1.serif{line-height:1.1}h3{margin:10px 0 2px}
     .muted{color:var(--muted)}.rose{color:var(--rose)}
     .photo{width:100%;height:100%;display:block;object-fit:cover;background:#eed9d0}
-    .photo-frame{overflow:hidden;border:2px solid var(--gold);border-radius:14px;background:#eed9d0}
+    .photo-frame{overflow:hidden;border:2px solid var(--gold);border-radius:14px;background:#eed9d0;margin-bottom:10px}
     .hero-photo{height:540px}.hero-photo img{height:100%}
     .hero-overlay{position:relative;margin-top:-160px;padding:32px 20px 35px;background:linear-gradient(to top,#fbf3ec 15%,#fbf3eccb 63%,transparent);text-align:center}
-    .couple-grid,.gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .arch{height:220px;border-radius:110px 110px 12px 12px}.arch img,.gallery-grid img{height:100%}
+    .couple-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .arch{height:220px;border-radius:110px 110px 12px 12px}.arch img{height:100%}
     .countdown{display:flex;justify-content:center;gap:8px;margin:20px 0}
     .cd{flex:1;min-width:0;padding:10px 2px;border:1px solid var(--blush);border-radius:12px;background:white}
     .cd strong{display:block;font-size:24px;color:var(--rose);line-height:1.3}.cd small{color:var(--muted)}
@@ -30,7 +30,12 @@
     .tl{position:relative;margin-bottom:0;padding:0 0 18px}.tl:not(:last-child):after{content:"";display:block;width:72%;margin:14px auto 0;border-bottom:1px dashed var(--blush)}
     .tl-time{display:block;font-weight:600;color:var(--rose)}.tl-icon{display:block;width:46px;height:46px;margin:0 auto 6px;stroke:currentColor;stroke-width:1.5}
     .palette{display:flex;justify-content:center;gap:9px;margin:18px 0}.swatch{width:42px;height:42px;border:2px solid white;border-radius:50%;box-shadow:0 2px 6px #0002}
-    .gallery-grid{gap:10px;margin-top:15px}.gallery-grid .photo-frame{height:190px}.gallery-grid .wide{grid-column:span 2;height:240px}
+    
+    /* แกลเลอรี Love Story แสดงภาพเรียงยาวลงมาตามเรฟ */
+    .gallery-stack {display: flex; flex-direction: column; gap: 12px; margin-top: 15px;}
+    .gallery-stack .photo-frame {height: 280px; width: 100%;}
+    .gallery-stack .photo-frame.tall {height: 380px;}
+
     .rsvp-card{padding:22px;text-align:left;border:1px solid var(--gold);border-radius:16px;background:white;box-shadow:0 4px 15px #c67d8520}
     .field{margin-bottom:14px}.field label{display:block;margin-bottom:5px}
     .field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid var(--gold);border-radius:8px;background:#fffcfa}
@@ -58,7 +63,8 @@
   <main class="ecard">
    <header>
     <div class="hero-photo">
-     <img class="photo" src="LINE_ALBUM_Pre-wedding_261104_15.jpg" alt="Hero Cover">
+     <!-- รูปปกหน้าเว็บชุดเครื่องแบบทหาร -->
+     <img class="photo" src="LINE_ALBUM_Pre-wedding_261104_16.jpg" alt="Hero Cover">
     </div>
     <div class="hero-overlay">
      <p class="rose" style="letter-spacing: 3px; margin: 0 0 6px; font-size: 14px;">THE WEDDING OF</p>
@@ -102,7 +108,8 @@
    <section class="section">
     <h2 class="serif" style="font-size: 21px;">SAVE THE DATE</h2>
     <p style="margin: 0 0 15px; font-size: 14px;">วันเสาร์ที่ 30 มกราคม พ.ศ. 2570 | เวลา 18.00 น.</p>
-    <div class="photo-frame" style="height:360px"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_16.jpg" alt="Military Portrait"></div>
+    <!-- รูปตรง Save the date ตามเรฟ -->
+    <div class="photo-frame" style="height:360px"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_11.jpg" alt="Save The Date"></div>
     
     <div class="countdown">
      <div class="cd"><strong id="cd-days">00</strong><small>วัน</small></div>
@@ -145,11 +152,22 @@
    <section class="section">
     <h2 class="serif" style="font-size: 21px;">LOVE STORY</h2>
     <p class="rose" style="font-size: 14px;">#benpeewedding</p>
-    <div class="gallery-grid">
-     <div class="photo-frame wide"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_11.jpg" alt="Gallery 1"></div>
-     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_7.jpg" alt="Gallery 2"></div>
-     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_12.jpg" alt="Gallery 3"></div>
-     <div class="photo-frame wide"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_13.jpg" alt="Gallery 4"></div>
+    
+    <!-- แสดงภาพทั้งหมดใน Love Story เรียงตามเรฟที่คุณส่งมา -->
+    <div class="gallery-stack">
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_11.jpg" alt="Story 1"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_1.jpg" alt="Story 2"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_2.jpg" alt="Story 3"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_3.jpg" alt="Story 4"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_4.jpg" alt="Story 5"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_5.jpg" alt="Story 6"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_7.jpg" alt="Story 7"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_8.jpg" alt="Story 8"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_9.jpg" alt="Story 9"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_12.jpg" alt="Story 10"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_13.jpg" alt="Story 11"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_17.jpg" alt="Story 12"></div>
+     <div class="photo-frame"><img class="photo" src="LINE_ALBUM_Pre-wedding_261104_18.jpg" alt="Story 13"></div>
     </div>
    </section>
 
